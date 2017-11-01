@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Button x:Name="addMessagebtn" Content="Add message" HorizontalAlignment="Left" Height="39" Margin="351,270,0,0" VerticalAlignment="Top" Width="107" Click="addMessagebtn_Click"/>
+        <TextBox x:Name="inputMessagetbx" HorizontalAlignment="Left" Height="199" Margin="87,66,0,0" TextWrapping="Wrap" Text="add message..." VerticalAlignment="Top" Width="371"/>
+        <TextBox x:Name="messageIDtbx" HorizontalAlignment="Left" Height="32" Margin="224,29,0,0" TextWrapping="Wrap" Text="Message ID..." VerticalAlignment="Top" Width="234"/>
+        <Label x:Name="addMessageID" Content="Add message id: " HorizontalAlignment="Left" Height="32" Margin="87,29,0,0" VerticalAlignment="Top" Width="132"/>
     </Grid>
 </Window>
