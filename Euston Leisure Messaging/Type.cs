@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Euston_Leisure_Messaging
 {
-    public enum Type { SMS, Email, Tweet };
+    public enum Type { SMS, Email, Tweet, NULL};
 }

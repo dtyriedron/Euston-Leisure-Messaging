@@ -29,9 +29,9 @@ namespace Euston_Leisure_Messaging
         {
             String text = inputMessagetbx.Text;
             String ID = messageIDtbx.Text;
+            FormatMessage fm = new FormatMessage(ID, text);
 
-
-            Test test = new Test();
+            Test test = new Test(fm);
             test.ShowDialog();
         }
     }

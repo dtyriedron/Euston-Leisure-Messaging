@@ -9,15 +9,15 @@ namespace Euston_Leisure_Messaging
     class Message
     {
         private Type type;
-        private Body Body;
+        private Body body;
         public Message(Type t, Body b)
         {
-            this.Type = t;
-            this.Body = b;
+            this.type = t;
+            this.body = b;
         }
 
         public Type Type { get => type; set => type = value; }
+        public Body Body { get => body; set => body = value; }
 
-        
     }
 }

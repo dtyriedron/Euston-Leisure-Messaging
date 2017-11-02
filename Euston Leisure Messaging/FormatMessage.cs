@@ -10,53 +10,50 @@ namespace Euston_Leisure_Messaging
     {
 
         public Type type;
+        public Body body;
         private Message message;
+        public String messageText;
+
+        internal Message Message { get => message; set => message = value; }
+
         public FormatMessage(String i, String m)
         {
             String messageID = i;
-            String message = m;
-            getMessageType(messageID);
-
+            messageText = m;
+            Message = new Message(GetMessageType(messageID), new Body(messageText, GetMessageType(messageID)));
         }
 
-        public void getMessageType(String messageID)
+        public Type GetMessageType(String messageID)
         {
             if (messageID.Contains("S"))
             {
-               // message = new Message(Type.SMS, new Body(message, ));
+                return Type.SMS;
             }
             else if (messageID.Contains("E"))
             {
-                //message = new Message(Type.Email);
+                return Type.Email;
             }
             else if (messageID.Contains("T"))
             {
-               // message = new Message(Type.Tweet);
+                return Type.Tweet;
             }
+            return Type.NULL;
         }
 
 
-        private void TextMessage(String message)
+        private void FormatBody(String messageText)
         {
-            if(message.GetType().Equals(Type.SMS))
+            if(message.Type.Equals(Type.SMS))
             {
-                
+                body.Type.Equals(Type.SMS);
             }
-        }
-
-        private void EmailMessage(String message)
-        {
-            if (message.GetType().Equals(Type.Email))
+            else if (message.Type.Equals(Type.Email))
             {
-
+                body.Type.Equals(Type.Email);
             }
-        }
-
-        private void TweetMessage(String message)
-        {
-            if (message.GetType().Equals(Type.Tweet))
+            else if (message.Type.Equals(Type.Tweet))
             {
-
+                body.Type.Equals(Type.Tweet);
             }
         }
     }

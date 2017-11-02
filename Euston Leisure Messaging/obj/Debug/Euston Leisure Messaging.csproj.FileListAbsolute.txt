@@ -15,3 +15,5 @@ C:\Users\40203\source\repos\Euston Leisure Messaging\Euston Leisure Messaging\ob
 C:\Users\40203\source\repos\Euston Leisure Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.pdb
 C:\Users\40203\source\repos\Euston Leisure Messaging\Euston Leisure Messaging\obj\Debug\Test.g.cs
 C:\Users\40203\source\repos\Euston Leisure Messaging\Euston Leisure Messaging\obj\Debug\Test.baml
+C:\Users\40203\source\repos\Euston Leisure Messaging\Euston Leisure Messaging\bin\Debug\Newtonsoft.Json.dll
+C:\Users\40203\source\repos\Euston Leisure Messaging\Euston Leisure Messaging\bin\Debug\Newtonsoft.Json.xml
