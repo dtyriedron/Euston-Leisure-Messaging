@@ -21,6 +21,7 @@ namespace Euston_Leisure_Messaging
             String messageID = i;
             messageText = m;
             Message = new Message(GetMessageType(messageID), new Body(messageText, GetMessageType(messageID)));
+            MessageHandler();
         }
 
         public Type GetMessageType(String messageID)
@@ -40,20 +41,63 @@ namespace Euston_Leisure_Messaging
             return Type.NULL;
         }
 
-
-        private void FormatBody(String messageText)
+        public static String getBetween(String text, Char strStart, Char strEnd)
         {
-            if(message.Type.Equals(Type.SMS))
+            int start, end;
+            if (text.Contains(strStart) && text.Contains(strEnd))
             {
-                body.Type.Equals(Type.SMS);
+                start = text.IndexOf(strStart, 0);
+                end = text.IndexOf(strEnd, start);
+                return text.Substring(start, end - start);
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+
+        public void MessageHandler()
+        {
+            if (message.Type.Equals(Type.SMS))
+            {
+                String phoneNum = getBetween(messageText, '+', ' ');
+                String textMessage = messageText.Substring(0, Math.Min(140, messageText.Length));
             }
             else if (message.Type.Equals(Type.Email))
             {
-                body.Type.Equals(Type.Email);
+                String Email = getBetween(messageText, '@', '.');
+                //put in a new line worth 20 characters for the subject
+                String emailMessage = messageText.Substring(0, Math.Min(1028, messageText.Length));
             }
             else if (message.Type.Equals(Type.Tweet))
             {
-                body.Type.Equals(Type.Tweet);
+                String tweetMessage = messageText.Substring(0, Math.Min(140, messageText.Length));
+                String twitterid = tweetMessage.Substring(0, Math.Min(16, tweetMessage.Length));
+                twitterid = getBetween(tweetMessage, '@', ' ');
+                int index = 0;
+
+                if (tweetMessage.Contains('#'))
+                {
+                    //store the hashtag and its count in an array if its already there then count++
+                    Test.IsHashtag[index] = getBetween(tweetMessage, '#', ' ');
+                    Console.WriteLine(" HEEEEELLELELLLLLLLOOOOO:   "+Test.IsHashtag[index]);
+                    foreach (var hashtag in Test.IsHashtag)
+                    {
+                       if (!Test.Hashtags.ContainsKey(hashtag))
+                       {
+                           Test.Hashtags.Add(hashtag, 1);
+                       }
+                        else
+                       {
+                           Test.Hashtags[hashtag]++;
+                           Console.WriteLine(Test.Hashtags[hashtag]);
+                       }
+                            
+                   }
+                   index++;
+                }
+
             }
         }
     }

@@ -26,29 +26,57 @@ namespace Euston_Leisure_Messaging
     {
         private Message message;
         private FormatMessage formatMessage;
+        private static String[] isHashtag = new String[60];
+        private static Dictionary<String, int> hashtags = new Dictionary<String, int>();
+
+        public static string[] IsHashtag { get => isHashtag; set => isHashtag = value; }
+        public static Dictionary<String,int> Hashtags { get => hashtags;}
 
         internal Test(FormatMessage f)
         {
             InitializeComponent();
             formatMessage = f;
             message = f.Message;
-            lbl1.Content = message.Body.text;
+
+            //todo need to make a loop that will print all the abbreviations in this array
+            lbl1.Content = GetAbriv(message.Body.text)[1];
+
             JSONHandler();
         }
         public void JSONHandler()
         {
             JObject text = new JObject(
-                new JProperty("text", message.Body.text));
+                new JProperty("text", message.Body.text),
+                new JProperty("ID", message.Type));
 
             File.WriteAllText(@"C:\Users\40203\text.json", text.ToString());
+        }
 
-            //writing json directory to a file
-            using (StreamWriter file = File.CreateText(@"C:\Users\40203\text.json"))
-            using (JsonTextWriter writer = new JsonTextWriter(file))
+        String[] GetAbriv(String text)
+        {
+            String[] strArray = new String[text.Length];
+            Dictionary<String, String> dict = new Dictionary<string, string>();
+            var strLines = File.ReadLines(@"C:\Users\40203\textwords.csv");
+            int index = 0;
+            var wordsInText = text.Split(' ');
+
+            foreach (var line in strLines)
             {
-                text.WriteTo(writer);
+                dict.Add(line.Split(',')[0], line.Split(',')[1]);
             }
 
+            foreach (var searchKey in wordsInText)
+            {
+                if (dict.ContainsKey(searchKey))
+                {
+                    Console.WriteLine(dict[searchKey]);
+                    strArray[index] = dict[searchKey];
+                }
+                index++;
+                continue;
+            }
+
+            return strArray;
         }
     }
 }
