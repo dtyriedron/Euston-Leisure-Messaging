@@ -13,9 +13,7 @@ namespace Euston_Leisure_Messaging
         public Type type;
         public Body body;
         private Message message;
-        public String messageText;
-        //public Regex phoneregex = new Regex(@"(?<=+)\w+");
-        //public Regex emailregex = new Regex(@"(?<=@>=?)\w+");
+        public String[] messageText;
         public Regex hashregex = new Regex(@"(?<=#)\w+");
 
         private static string[] matches = new string[60];
@@ -23,7 +21,7 @@ namespace Euston_Leisure_Messaging
 
         internal Message Message { get => message; set => message = value; }
 
-        public FormatMessage(String i, String m)
+        public FormatMessage(String i, String[] m)
         {
             String messageID = i;
             messageText = m;
@@ -48,61 +46,91 @@ namespace Euston_Leisure_Messaging
             return Type.NULL;
         }
 
-        public string[] findRegex(string text, Regex regex)
+        public MatchCollection findRegex(string text, Regex regex)
         {
-            var matches = regex.Matches(text);
-            int index = 0;
-            foreach (Match m in matches)
-            {
-                Matches[index] = m.Value;
-                Console.WriteLine("added match:   " + Matches[index]);
-                index++;
-            }
-            return Matches;
+            return regex.Matches(text);
         }
 
+        public void Validate(string text, Regex regex)
+        {
+            if(!String.IsNullOrWhiteSpace(text))
+            {
+                if(!regex.IsMatch(text))
+                {
+                    throw new Exception("Invalid input!");
+                }
+            }           
+        }
+
+        public string GarbageRemoval(string text)
+        {
+            return text.Replace("\r\n","");
+        }
+
+        public string FormatBody(string[] text, int line)
+        {
+            string newBody = "";
+            for (int i = line; i < text.Length; i++)
+            {
+                if (!String.IsNullOrWhiteSpace(text[i]))
+                {
+                    newBody += " " + GarbageRemoval(text[i]);
+                }
+                else
+                    continue;
+            }
+            return newBody;
+        }
         public void MessageHandler()
         {
             if (message.Type.Equals(Type.SMS))
-            {
-                //String phoneNum = getBetween(messageText, '+', ' ');
-                String textMessage = messageText.Substring(0, Math.Min(140, messageText.Length));
+            { 
+                string PhoneNum = GarbageRemoval(messageText[0]);
+                Validate(PhoneNum, new Regex(@"^(?:\(?)(?:\+| 0{2})([0-9]{3})\)?([0-9]{2})([0-9]{7})$"));
+                string PhoneBody = FormatBody(messageText, 1);
             }
             else if (message.Type.Equals(Type.Email))
-            {
-                //String Email = getBetween(messageText, '@', '.');
-                //put in a new line worth 20 characters for the subject
-                String emailMessage = messageText.Substring(0, Math.Min(1028, messageText.Length));
+            {               
+                string Email = GarbageRemoval(messageText[0]);
+                Validate(Email, new Regex(@"(?<email>\w+@\w+\.[a-z]{0,3})"));
+
+                string Subject = GarbageRemoval(messageText[1]); // check the length of this              
+                string EmailBody = FormatBody(messageText, 2);
             }
             else if (message.Type.Equals(Type.Tweet))
             {
-                String tweetMessage = messageText.Substring(0, Math.Min(140, messageText.Length));
-                String twitterid = tweetMessage.Substring(0, Math.Min(16, tweetMessage.Length));
-                twitterid = findRegex(tweetMessage, new Regex(@"(?<=@)\w+"))[0];
-                Console.WriteLine(twitterid);
-                //store the hashtag and its count in an array if its already there then count++                
-                foreach (var hashtag in findRegex(tweetMessage, hashregex))
+                string TwitterId = GarbageRemoval(messageText[0]);
+                Validate(TwitterId, new Regex(@"(?<=@)\w+"));
+                Console.WriteLine(TwitterId);
+                //store the hashtag and its count in an array if its already there then count++
+
+                var regex = new Regex(@"(?<=#)\w+");
+                var matches = regex.Matches(FormatBody(messageText, 1));
+                     
+                foreach (Match hashtag in matches)
                 {
-                      Console.WriteLine("foreach");
+                      Console.WriteLine("heeeeeeeeeee"+hashtag);
 
                     try
                     {
-                        if (Test.Hashtags.ContainsKey(hashtag))
+                        if (Test.Hashtags.ContainsKey(hashtag.Value))
                         {
                             Console.WriteLine("adding to dictionary count");
-                            Test.Hashtags.TryGetValue(hashtag, out int val);
-                            Test.Hashtags[hashtag] = val + 1;
-                            Console.WriteLine(Test.Hashtags[hashtag]);
+                            Test.Hashtags.TryGetValue(hashtag.Value, out int val);
+                            Test.Hashtags[hashtag.Value] = val + 1;
+                            Console.WriteLine(Test.Hashtags[hashtag.Value]);
                         }
-                        else
+                        else 
                         {
                             Console.WriteLine("adding to dictionary");
-                            Test.Hashtags.Add(hashtag, 1);
+                            Test.Hashtags.Add(hashtag.Value, 1);
                             Console.WriteLine("added to the dictionary");
                         }
                     }
                     catch (Exception ex)
-                    {}
+                    {
+                        Console.WriteLine(ex.ToString());                   
+                    }
                             
                 }
             }

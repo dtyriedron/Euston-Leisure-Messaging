@@ -39,26 +39,29 @@ namespace Euston_Leisure_Messaging
             message = f.Message;
 
             //todo need to make a loop that will print all the abbreviations in this array
-            lbl1.Content = GetAbriv(message.Body.text)[1];
+            textBlock.Text = GetAbriv(message.Body.text)[1];
 
             JSONHandler();
         }
         public void JSONHandler()
         {
-            JObject text = new JObject(
-                new JProperty("text", message.Body.text),
-                new JProperty("ID", message.Type));
+            JObject text = new JObject(                
+                new JProperty("ID", message.Type),
+                //sender: new JProperty("sender", );
+                //if (message.Type.Equals(Type.Email))
+                // new JProperty("Subject, ")
+                new JProperty("text", message.Body.text));
 
             File.WriteAllText(@"C:\Users\40203\text.json", text.ToString());
         }
 
-        String[] GetAbriv(String text)
+        String[] GetAbriv(String[] text)
         {
             String[] strArray = new String[text.Length];
             Dictionary<String, String> dict = new Dictionary<string, string>();
             var strLines = File.ReadLines(@"C:\Users\40203\textwords.csv");
             int index = 0;
-            var wordsInText = text.Split(' ');
+            var wordsInText = formatMessage.FormatBody(text, 1).Split(' ');
 
             foreach (var line in strLines)
             {
@@ -69,14 +72,26 @@ namespace Euston_Leisure_Messaging
             {
                 if (dict.ContainsKey(searchKey))
                 {
-                    Console.WriteLine(dict[searchKey]);
-                    strArray[index] = dict[searchKey];
+                    var myKey = dict.FirstOrDefault(x => x.Key == searchKey);
+
+                    Console.WriteLine(myKey.Value);
+                    strArray[index] = myKey.Key + " <" + myKey.Value + "> ";
                 }
                 index++;
                 continue;
             }
 
             return strArray;
+        }
+
+        string TextOut()
+        {
+            string text;
+            if (message.Type.Equals(Type.Tweet))
+            {
+                
+            }
+            return "";
         }
     }
 }

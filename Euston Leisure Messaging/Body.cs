@@ -12,11 +12,11 @@ namespace Euston_Leisure_Messaging
     
     class Body
     {
-        public String text;
+        public String[] text;
         private Type type;
         private Message message;
 
-        public Body(String s, Type t)
+        public Body(String[] s, Type t)
         {
             this.text = s;
             this.type = t;

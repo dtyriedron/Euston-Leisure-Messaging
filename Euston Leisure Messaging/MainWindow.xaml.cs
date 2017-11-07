@@ -23,13 +23,30 @@ namespace Euston_Leisure_Messaging
         public MainWindow()
         {
             InitializeComponent();
+            inputMessagetbx.AcceptsReturn = true;
         }
 
         private void addMessagebtn_Click(object sender, RoutedEventArgs e)
         {
-            String text = inputMessagetbx.Text;
+            string[] lines = new string[30];
+
+            for (int i = 0; i < inputMessagetbx.LineCount; i++)
+            {
+                lines[i] = inputMessagetbx.GetLineText(i);
+            }
+            
             String ID = messageIDtbx.Text;
-            FormatMessage fm = new FormatMessage(ID, text);
+
+            FormatMessage fm = null;
+            try
+            {
+               fm = new FormatMessage(ID, lines);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
 
             Test test = new Test(fm);
             test.ShowDialog();
