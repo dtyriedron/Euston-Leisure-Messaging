@@ -59,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Body.cs" />
     <Compile Include="FormatMessage.cs" />
+    <Compile Include="JSONHandler.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Sender.cs" />
     <Compile Include="Test.xaml.cs">
