@@ -35,8 +35,6 @@ namespace Euston_Leisure_Messaging
 
             File.WriteAllText(@"C:\Users\40203\" + formatMessage.MessageID + ".json", text.ToString());
 
-
-
         }
 
         public static void Write(Message message, FormatMessage formatMessage)

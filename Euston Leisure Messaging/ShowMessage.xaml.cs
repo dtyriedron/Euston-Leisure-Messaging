@@ -20,69 +20,75 @@ using Newtonsoft.Json;
 namespace Euston_Leisure_Messaging
 {
     /// <summary>
-    /// Interaction logic for Test.xaml
+    /// 
     /// </summary>
-    public partial class Test : Window
+    public partial class ShowMessage : Window
     {
         private Message message;
-        private FormatMessage formatMessage;        
-        private static Dictionary<string, int> hashtags = new Dictionary<string, int>();
+        private FormatMessage formatMessage;
+        private static Dictionary<string, int> hashtags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
         private static Dictionary<string, int> urls = new Dictionary<string, int>();
-        
-        public static Dictionary<string,int> Hashtags { get => hashtags;}
-        public static Dictionary<string, int> URLS { get => urls; }
+        private static Dictionary<string, int> mentions = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
 
-        internal Test(FormatMessage f)
+        public static Dictionary<string, int> Hashtags { get => hashtags; }
+        public static Dictionary<string, int> URLS { get => urls; }
+        public static Dictionary<string, int> Mentions { get => mentions; set => mentions = value; }
+
+        internal ShowMessage(FormatMessage f)
         {
             InitializeComponent();
             formatMessage = f;
             message = f.Message;
 
-            //todo need to make a loop that will print all the abbreviations in this array
-            textBlock.Text = TextSpeak(message.Body.text)[1];
-
             if (message.Type == Type.Email)
+            {
                 JSONHandler.WriteEmail(message, formatMessage);
+                if (formatMessage.IsSIR)
+                    textBlock.Text = formatMessage.EmailBody;
+                else
+                    textBlock.Text = formatMessage.EmailBody;
+            }
             else
+            {
+                var text = TextSpeak(formatMessage.FormatBody(message.Body.text, 1));
+                textBlock.Text = text;
                 JSONHandler.Write(message, formatMessage);
+            }
         }
 
-        String[] TextSpeak(String[] text)
+        string TextSpeak(string text)
         {
-            String[] strArray = new String[text.Length];
             Dictionary<String, String> dict = new Dictionary<string, string>();
             var strLines = File.ReadLines(@"C:\Users\40203\textwords.csv");
-            int index = 0;
-            var wordsInText = formatMessage.FormatBody(text, 1).Split(' ');
 
             foreach (var line in strLines)
             {
-                dict.Add(line.Split(',')[0], line.Split(',')[1]);
+                var splits = line.Split(',');
+                if (splits.Length > 2)
+                    dict.Add(splits[0], splits[1] + splits[2]);
+                else
+                    dict.Add(splits[0], splits[1]);
             }
 
-            foreach (var searchKey in wordsInText)
+            foreach (var word in dict)
             {
-                if (dict.ContainsKey(searchKey))
+                if (text.Contains(word.Key))
                 {
-                    var myKey = dict.FirstOrDefault(x => x.Key == searchKey);
-
-                    Console.WriteLine(myKey.Value);
                     //need to replace the next line with a replace function in a replace text method rather than store it into an array
-                    strArray[index] = myKey.Key + " <" + myKey.Value + "> ";
+                    text = text.Replace(word.Key, word.Key + "<" + word.Value + ">");
+                    Console.WriteLine(text);
+                    continue;
                 }
-                index++;
-                continue;
             }
+            return text;
 
-            return strArray;
         }
 
         string TextOut()
         {
-            string text;
             if (message.Type.Equals(Type.Tweet))
             {
-                
+
             }
             return "";
         }

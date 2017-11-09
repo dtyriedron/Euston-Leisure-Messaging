@@ -38,18 +38,24 @@ namespace Euston_Leisure_Messaging
             String ID = messageIDtbx.Text;
 
             FormatMessage fm = null;
-            try
-            {
+            //try
+            //{
                fm = new FormatMessage(ID, lines);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
+           // }
+            //catch (Exception ex)
+            //{
+               // MessageBox.Show(ex.Message);
+                //return;
+            //}
 
-            Test test = new Test(fm);
-            test.ShowDialog();
+            ShowMessage sm = new ShowMessage(fm);
+            sm.ShowDialog();
+        }
+
+        private void btn_stats_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayLists DL = new DisplayLists();
+            DL.ShowDialog();
         }
     }
 }

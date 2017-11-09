@@ -24,15 +24,17 @@ C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\bi
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\bin\Debug\Newtonsoft.Json.xml
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.csprojResolveAssemblyReference.cache
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\MainWindow.g.cs
-C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Test.g.cs
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\App.g.cs
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging_MarkupCompile.cache
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging_MarkupCompile.lref
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\MainWindow.baml
-C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Test.baml
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.g.resources
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston_Leisure_Messaging.Properties.Resources.resources
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.csproj.GenerateResource.Cache
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.csproj.CoreCompileInputs.cache
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.exe
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.pdb
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\ShowMessage.g.cs
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\ShowMessage.baml
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayLists.g.cs
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayLists.baml

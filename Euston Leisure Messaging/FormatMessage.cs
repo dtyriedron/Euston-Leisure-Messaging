@@ -19,6 +19,7 @@ namespace Euston_Leisure_Messaging
         public String[] messageText;
         public Regex hashregex = new Regex(@"(?<=#)\w+");
         private string messageID;
+        public string EmailBody;
 
         private static string[] matches = new string[60];
         public static string[] Matches { get => matches; set => matches = value; }
@@ -33,6 +34,11 @@ namespace Euston_Leisure_Messaging
             messageText = m;
             Message = new Message(GetMessageType(MessageID), new Body(messageText, GetMessageType(MessageID)));
             MessageHandler();
+        }
+
+        public void replaceText(string text)
+        {
+
         }
 
         public Type GetMessageType(String messageID)
@@ -91,6 +97,41 @@ namespace Euston_Leisure_Messaging
             }
             return newBody;
         }
+
+        public void replaceURLS()
+        {
+            Regex regex = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)", RegexOptions.IgnoreCase);
+            var matches = regex.Matches(EmailBody);
+
+            foreach (Match URL in matches)
+            {
+                Console.WriteLine(URL.Value);
+                try
+                {
+                    //replace the words in the text to have the expanded abbreviation = myKey.Key + " <" + myKey.Value + "> ";
+                    EmailBody = EmailBody.Replace(URL.Value, "<URL Quarantined>");
+                    if (ShowMessage.URLS.ContainsKey(URL.Value))
+                    {
+                        Console.WriteLine("adding to the email dict count");
+                        ShowMessage.URLS.TryGetValue(URL.Value, out int val);
+                        ShowMessage.URLS[URL.Value] = val + 1;
+                        Console.WriteLine(ShowMessage.URLS[URL.Value]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("adding to the email dict");
+                        ShowMessage.URLS.Add(URL.Value, 1);
+                        var myKey = ShowMessage.URLS.FirstOrDefault(x => x.Key == URL.Value);
+                        Console.WriteLine("replacing: " + myKey.Key);                                              
+                        Console.WriteLine("added to the email dict");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+        }
         public void MessageHandler()
         {
             if (message.Type.Equals(Type.SMS))
@@ -104,10 +145,13 @@ namespace Euston_Leisure_Messaging
                 string Email = GarbageRemoval(messageText[0]);
                 Validate(Email, new Regex(@"(?<email>\w+@\w+\.[a-z]{0,3})"));
 
+                EmailBody = FormatBody(messageText, 2);
+
                 string Subject = GarbageRemoval(messageText[1]); // check the length of this   
                 if (Subject.Contains("SIR"))
                 {
                     isSIR = true;
+                    EmailBody = FormatBody(messageText, 4);
                     //check the date is valid 
                     var dateRegex = new Regex(@"(\d+)[-.\/](\d+)[-.\/](\d+)");
                     if (!dateRegex.IsMatch(Subject))
@@ -120,39 +164,10 @@ namespace Euston_Leisure_Messaging
                     ArrayList validReports = new ArrayList() {"Theft of Properties", "Staff Attack", "Device Damage", "Raid", "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident", "Sport Injury", "Personal Info Leak"};
                     if (!validReports.Contains(GarbageRemoval(messageText[3])))
                         throw new Exception("invalid Nature of Incident");
+                    replaceURLS();
                 }
-                string EmailBody = FormatBody(messageText, 2);
-
-                var regex = new Regex(@"^(http|https|ftp|)\://|[a-zA-Z0-9\-\.]+\.[a-zA-Z](:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*[^\.\,\)\(\s]$");
-                var matches = regex.Matches(FormatBody(messageText, 2));
-
-                foreach (Match URL in matches)
-                {
-                    Console.WriteLine(URL.Value);
-                    try
-                    {
-                        if (Test.URLS.ContainsKey(URL.Value))
-                        {
-                            Console.WriteLine("adding to the email dict count");
-                            Test.URLS.TryGetValue(URL.Value, out int val);
-                            Test.URLS[URL.Value] = val + 1;
-                            Console.WriteLine(Test.URLS[URL.Value]);
-                        }
-                        else
-                        {
-                            Console.WriteLine("adding to the email dict");
-                            Test.URLS.Add(URL.Value, 1);
-                            var myKey = Test.URLS.FirstOrDefault(x => x.Key == URL.Value);
-                            Console.WriteLine(myKey.Value);
-                            //replace the words in the text to have the expanded abbreviation = myKey.Key + " <" + myKey.Value + "> ";
-                            Console.WriteLine("added to the email dict");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                    }
-                }
+                else
+                replaceURLS();
             }
             else if (message.Type.Equals(Type.Tweet))
             {
@@ -160,28 +175,41 @@ namespace Euston_Leisure_Messaging
                 Validate(TwitterId, new Regex(@"(?<=@)\w+"));
                 if (TwitterId.Length > 15)
                     throw new Exception("invalid twitterid!!");
+
+                var regex = new Regex(@"(?<=@)\w+");
+                var matches = regex.Matches(FormatBody(messageText, 1));
+
+                foreach (Match searchKey in matches)
+                    if (ShowMessage.Mentions.ContainsKey(searchKey.Value))
+                    {
+                        ShowMessage.Mentions.TryGetValue(searchKey.Value, out int val);
+                        ShowMessage.Mentions[searchKey.Value] = val + 1;
+                    }
+                else
+                    ShowMessage.Mentions.Add(searchKey.Value, 1);
+
                 Console.WriteLine(TwitterId);
                 //store the hashtag and its count in an array if its already there then count++
 
-                var regex = new Regex(@"(?<=#)\w+");
-                var matches = regex.Matches(FormatBody(messageText, 1));
-                     
+                regex = new Regex(@"(?<=#)\w+");
+                matches = regex.Matches(FormatBody(messageText, 1));
+                
                 foreach (Match hashtag in matches)
                 {
                       Console.WriteLine("heeeeeeeeeee"+hashtag);
                     try
                     {
-                        if (Test.Hashtags.ContainsKey(hashtag.Value))
+                        if (ShowMessage.Hashtags.ContainsKey(hashtag.Value))
                         {
                             Console.WriteLine("adding to dictionary count");
-                            Test.Hashtags.TryGetValue(hashtag.Value, out int val);
-                            Test.Hashtags[hashtag.Value] = val + 1;
-                            Console.WriteLine(Test.Hashtags[hashtag.Value]);
+                            ShowMessage.Hashtags.TryGetValue(hashtag.Value, out int val);
+                            ShowMessage.Hashtags[hashtag.Value] = val + 1;
+                            Console.WriteLine(ShowMessage.Hashtags[hashtag.Value]);
                         }
                         else 
                         {
                             Console.WriteLine("adding to dictionary");
-                            Test.Hashtags.Add(hashtag.Value, 1);
+                            ShowMessage.Hashtags.Add(hashtag.Value, 1);
                             Console.WriteLine("added to the dictionary");
                         }
                     }
