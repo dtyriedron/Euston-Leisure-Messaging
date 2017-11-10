@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\App.xaml
-3-257436233
+4-496392485
 
-17-108095573
+18588341081
 14534987415
-DisplayLists.xaml;MainWindow.xaml;ShowMessage.xaml;
+DisplayEmailLists.xaml;DisplayTweetLists.xaml;MainWindow.xaml;ShowMessage.xaml;
 
-False
+True
 

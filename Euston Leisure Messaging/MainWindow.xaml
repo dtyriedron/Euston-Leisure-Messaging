@@ -8,9 +8,11 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Button x:Name="addMessagebtn" Content="Add message" HorizontalAlignment="Left" Height="39" Margin="351,270,0,0" VerticalAlignment="Top" Width="107" Click="addMessagebtn_Click"/>
-        <TextBox x:Name="inputMessagetbx" HorizontalAlignment="Left" Height="199" Margin="87,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
-        <TextBox x:Name="messageIDtbx" HorizontalAlignment="Left" Height="32" Margin="224,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="234"/>
-        <Label x:Name="addMessageID" Content="Add message id: " HorizontalAlignment="Left" Height="32" Margin="87,29,0,0" VerticalAlignment="Top" Width="132"/>
-        <Button x:Name="btn_stats" Content="Button" HorizontalAlignment="Left" Margin="71,280,0,0" VerticalAlignment="Top" Width="75" Click="btn_stats_Click"/>
+        <TextBox x:Name="inputMessagetbx" HorizontalAlignment="Left" Height="199" Margin="10,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="448"/>
+        <TextBox x:Name="messageIDtbx" HorizontalAlignment="Left" Height="32" Margin="147,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="234"/>
+        <Label x:Name="addMessageID" Content="Add message id: " HorizontalAlignment="Left" Height="32" Margin="10,29,0,0" VerticalAlignment="Top" Width="132"/>
+        <Button x:Name="btn_stats_for_tweets" Content="Stats for tweets" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Width="88" Height="29" Click="btn_stats_for_tweets_Click"/>
+        <Button x:Name="btn_stats_for_emails" Content="Stats for emails" HorizontalAlignment="Left" Margin="173,280,0,0" VerticalAlignment="Top" Width="88" Height="29" Click="btn_stats_for_emails_Click"/>
+        <Button x:Name="btn_open_file" Content="Open file" HorizontalAlignment="Left" Margin="386,29,0,0" VerticalAlignment="Top" Width="72" Height="32" Click="btn_open_file_Click"/>
     </Grid>
 </Window>

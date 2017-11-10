@@ -36,5 +36,7 @@ C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\ob
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\Euston Leisure Messaging.pdb
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\ShowMessage.g.cs
 C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\ShowMessage.baml
-C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayLists.g.cs
-C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayLists.baml
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayEmailLists.g.cs
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayTweetLists.g.cs
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayEmailLists.baml
+C:\Users\40203\source\repos\Euston-Leisure-Messaging\Euston Leisure Messaging\obj\Debug\DisplayTweetLists.baml

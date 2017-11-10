@@ -15,22 +15,22 @@ using System.Windows.Shapes;
 namespace Euston_Leisure_Messaging
 {
     /// <summary>
-    /// Interaction logic for DisplayLists.xaml
+    /// Interaction logic for DisplayEmailLists.xaml
     /// </summary>
-    public partial class DisplayLists : Window
+    public partial class DisplayEmailLists : Window
     {
-        public DisplayLists()
+        public DisplayEmailLists()
         {
             InitializeComponent();
 
-            foreach(var hashtag in ShowMessage.Hashtags.OrderByDescending(key => key.Value))
+            foreach (var SIR in ShowMessage.SIRS.OrderByDescending(key => key.Value))
             {
-                textBlock_trending.Text += hashtag.Key + " " + hashtag.Value + "\n";
+                textBlock_SIR.Text += SIR.Key + " " + SIR.Value + "\n";
             }
 
-            foreach (var twitterid in ShowMessage.Mentions.OrderByDescending(key => key.Value))
+            foreach (var URL in ShowMessage.URLS.OrderByDescending(key => key.Value))
             {
-                textBlock_mentions.Text += twitterid.Key + " " + twitterid.Value + "\n";
+                textBlock_URL.Text += URL.Key + " " + URL.Value + "\n";
             }
         }
     }

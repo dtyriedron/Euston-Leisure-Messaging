@@ -58,7 +58,6 @@ namespace Euston_Leisure_Messaging
             else
             {
                 throw new Exception("Invalid ID!");
-                //return Type.NULL;
             }            
         }
 
@@ -147,12 +146,14 @@ namespace Euston_Leisure_Messaging
 
                 EmailBody = FormatBody(messageText, 2);
 
-                string Subject = GarbageRemoval(messageText[1]); // check the length of this   
+                string Subject = GarbageRemoval(messageText[1]);
+                if (Subject.Length > 20)
+                    throw new Exception("Subject too long");
                 if (Subject.Contains("SIR"))
                 {
                     isSIR = true;
                     EmailBody = FormatBody(messageText, 4);
-                    //check the date is valid 
+                    //check the date is valid
                     var dateRegex = new Regex(@"(\d+)[-.\/](\d+)[-.\/](\d+)");
                     if (!dateRegex.IsMatch(Subject))
                         throw new Exception("date invalid");
@@ -164,6 +165,17 @@ namespace Euston_Leisure_Messaging
                     ArrayList validReports = new ArrayList() {"Theft of Properties", "Staff Attack", "Device Damage", "Raid", "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident", "Sport Injury", "Personal Info Leak"};
                     if (!validReports.Contains(GarbageRemoval(messageText[3])))
                         throw new Exception("invalid Nature of Incident");
+                    else
+                    {
+                        string searchKey = GarbageRemoval(messageText[3]);
+                            if (ShowMessage.SIRS.ContainsKey(searchKey))
+                            {
+                                ShowMessage.SIRS.TryGetValue(searchKey, out int val);
+                                ShowMessage.SIRS[searchKey] = val + 1;
+                            }
+                            else
+                                ShowMessage.SIRS.Add(searchKey, 1);
+                    }
                     replaceURLS();
                 }
                 else

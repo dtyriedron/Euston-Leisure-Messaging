@@ -58,8 +58,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Body.cs" />
-    <Compile Include="DisplayLists.xaml.cs">
-      <DependentUpon>DisplayLists.xaml</DependentUpon>
+    <Compile Include="DisplayEmailLists.xaml.cs">
+      <DependentUpon>DisplayEmailLists.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DisplayTweetLists.xaml.cs">
+      <DependentUpon>DisplayTweetLists.xaml</DependentUpon>
     </Compile>
     <Compile Include="FormatMessage.cs" />
     <Compile Include="JSONHandler.cs" />
@@ -69,7 +72,11 @@
       <DependentUpon>ShowMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Type.cs" />
-    <Page Include="DisplayLists.xaml">
+    <Page Include="DisplayEmailLists.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DisplayTweetLists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

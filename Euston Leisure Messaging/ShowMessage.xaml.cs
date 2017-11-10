@@ -27,12 +27,14 @@ namespace Euston_Leisure_Messaging
         private Message message;
         private FormatMessage formatMessage;
         private static Dictionary<string, int> hashtags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
-        private static Dictionary<string, int> urls = new Dictionary<string, int>();
+        private static Dictionary<string, int> urls = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
         private static Dictionary<string, int> mentions = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
+        private static Dictionary<string, int> sirs = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
 
         public static Dictionary<string, int> Hashtags { get => hashtags; }
         public static Dictionary<string, int> URLS { get => urls; }
         public static Dictionary<string, int> Mentions { get => mentions; set => mentions = value; }
+        public static Dictionary<string, int> SIRS { get => sirs; set => sirs = value; }
 
         internal ShowMessage(FormatMessage f)
         {
