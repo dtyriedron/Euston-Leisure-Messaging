@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Euston_Leisure_Messaging"
         mc:Ignorable="d"
-        Title="ShowMessage" Height="300" Width="300">
-    <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="65,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="88" Width="148"/>
-    </Grid>
+        Title="ShowMessage" Height="350" Width="525">
+    <ScrollViewer HorizontalAlignment="Center" Height="289" VerticalAlignment="Top" Width="490" Margin="20,13,7,0" RenderTransformOrigin="0.5,0.5" >
+        <ScrollViewer.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform AngleY="0.249"/>
+                <RotateTransform/>
+                <TranslateTransform Y="0.777"/>
+            </TransformGroup>
+        </ScrollViewer.RenderTransform>
+        <TextBlock x:Name="outputText" TextWrapping="Wrap" RenderTransformOrigin="0.496,0.51" Height="268" Width="444"/>
+    </ScrollViewer>
 </Window>

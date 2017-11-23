@@ -49,16 +49,21 @@ namespace Euston_Leisure_Messaging
             }
 
             FormatMessage fm = null;
-           try
-           {
-               fm = new FormatMessage(ID, lines);
-           }
-           catch (Exception ex)
-           {
-              MessageBox.Show(ex.Message);
+            if (!String.IsNullOrEmpty(inputMessagetbx.Text))
+                try
+                {
+                    fm = new FormatMessage(ID, lines);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+            else
+            {
+                MessageBox.Show("no input within textbox");
                 return;
-           }
-
+            }
             ShowMessage sm = new ShowMessage(fm);
             sm.ShowDialog();
         }

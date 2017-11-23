@@ -72,7 +72,7 @@ namespace Euston_Leisure_Messaging
             {
                 if(!regex.IsMatch(text))
                 {
-                    throw new Exception("Invalid input!");
+                    throw new Exception("Invalid regex!");
                 }
             }           
         }
@@ -138,6 +138,8 @@ namespace Euston_Leisure_Messaging
                 string PhoneNum = GarbageRemoval(messageText[0]);
                 Validate(PhoneNum, new Regex(@"^(?:\(?)(?:\+| 0{2})([0-9]{3})\)?([0-9]{2})([0-9]{7})$"));
                 string PhoneBody = FormatBody(messageText, 1);
+                if (PhoneBody.Length > 140)
+                    throw new Exception("message is too long");
             }
             else if (message.Type.Equals(Type.Email))
             {               

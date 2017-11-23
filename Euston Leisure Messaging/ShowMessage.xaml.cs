@@ -44,21 +44,21 @@ namespace Euston_Leisure_Messaging
 
             if (message.Type == Type.Email)
             {
-                JSONHandler.WriteEmail(message, formatMessage);
+                JSONHandler.WriteEmail(formatMessage);
                 if (formatMessage.IsSIR)
-                    textBlock.Text = formatMessage.EmailBody;
+                    outputText.Text = formatMessage.EmailBody;
                 else
-                    textBlock.Text = formatMessage.EmailBody;
+                    outputText.Text = formatMessage.EmailBody;
             }
             else
             {
                 var text = TextSpeak(formatMessage.FormatBody(message.Body.text, 1));
-                textBlock.Text = text;
-                JSONHandler.Write(message, formatMessage);
+                outputText.Text = text;
+                JSONHandler.Write(message, formatMessage, this);
             }
         }
 
-        string TextSpeak(string text)
+        public string TextSpeak(string text)
         {
             Dictionary<String, String> dict = new Dictionary<string, string>();
             var strLines = File.ReadLines(@"C:\Users\40203\textwords.csv");
@@ -74,7 +74,7 @@ namespace Euston_Leisure_Messaging
 
             foreach (var word in dict)
             {
-                if (text.Contains(word.Key))
+                if (text.Contains(" "+ word.Key))
                 {
                     //need to replace the next line with a replace function in a replace text method rather than store it into an array
                     text = text.Replace(word.Key, word.Key + "<" + word.Value + ">");
@@ -84,15 +84,6 @@ namespace Euston_Leisure_Messaging
             }
             return text;
 
-        }
-
-        string TextOut()
-        {
-            if (message.Type.Equals(Type.Tweet))
-            {
-
-            }
-            return "";
         }
     }
 }
