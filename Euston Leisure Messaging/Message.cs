@@ -16,7 +16,6 @@ namespace Euston_Leisure_Messaging
             this.body = b;
         }
 
-
         public Type Type { get => type; set => type = value; }
         public Body Body { get => body; set => body = value; }
     }

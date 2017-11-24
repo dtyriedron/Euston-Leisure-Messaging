@@ -67,7 +67,6 @@
     <Compile Include="FormatMessage.cs" />
     <Compile Include="JSONHandler.cs" />
     <Compile Include="Message.cs" />
-    <Compile Include="Sender.cs" />
     <Compile Include="ShowMessage.xaml.cs">
       <DependentUpon>ShowMessage.xaml</DependentUpon>
     </Compile>

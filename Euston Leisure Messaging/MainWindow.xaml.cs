@@ -22,7 +22,7 @@ namespace Euston_Leisure_Messaging
     /// </summary>
     public partial class MainWindow : Window
     {
-        string[] lines = new string[30];
+        public string[] lines = new string[30];
         public MainWindow()
         {
             InitializeComponent();

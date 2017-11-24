@@ -14,7 +14,6 @@ namespace Euston_Leisure_Messaging
     {
         public String[] text;
         private Type type;
-        private Message message;
 
         public Body(String[] s, Type t)
         {

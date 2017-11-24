@@ -16,8 +16,7 @@ namespace Euston_Leisure_Messaging
         public Body body;
         private bool isSIR = false;
         private Message message;
-        public String[] messageText;
-        public Regex hashregex = new Regex(@"(?<=#)\w+");
+        public String[] MessageText;
         private string messageID;
         public string EmailBody;
 
@@ -31,17 +30,12 @@ namespace Euston_Leisure_Messaging
         public FormatMessage(String i, String[] m)
         {
             MessageID = i;
-            messageText = m;
-            Message = new Message(GetMessageType(MessageID), new Body(messageText, GetMessageType(MessageID)));
+            MessageText = m;
+            Message = new Message(GetMessageType(MessageID), new Body(MessageText, GetMessageType(MessageID)));
             MessageHandler();
         }
 
-        public void replaceText(string text)
-        {
-
-        }
-
-        public Type GetMessageType(String messageID)
+        private Type GetMessageType(string messageID)
         {
             if (messageID.Contains("S") && messageID.Length == 10)
             {
@@ -61,12 +55,12 @@ namespace Euston_Leisure_Messaging
             }            
         }
 
-        public MatchCollection findRegex(string text, Regex regex)
+        private MatchCollection FindRegex(string text, Regex regex)
         {
             return regex.Matches(text);
         }
 
-        public void Validate(string text, Regex regex)
+        private void Validate(string text, Regex regex)
         {
             if(!String.IsNullOrWhiteSpace(text))
             {
@@ -97,7 +91,7 @@ namespace Euston_Leisure_Messaging
             return newBody;
         }
 
-        public void replaceURLS()
+        private void ReplaceURLS()
         {
             Regex regex = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)", RegexOptions.IgnoreCase);
             var matches = regex.Matches(EmailBody);
@@ -131,45 +125,49 @@ namespace Euston_Leisure_Messaging
                 }
             }
         }
-        public void MessageHandler()
+
+        private void MessageHandler()
         {
             if (message.Type.Equals(Type.SMS))
             { 
-                string PhoneNum = GarbageRemoval(messageText[0]);
+                string PhoneNum = GarbageRemoval(MessageText[0]);
                 Validate(PhoneNum, new Regex(@"^(?:\(?)(?:\+| 0{2})([0-9]{3})\)?([0-9]{2})([0-9]{7})$"));
-                string PhoneBody = FormatBody(messageText, 1);
+                string PhoneBody = FormatBody(MessageText, 1);
                 if (PhoneBody.Length > 140)
                     throw new Exception("message is too long");
             }
             else if (message.Type.Equals(Type.Email))
             {               
-                string Email = GarbageRemoval(messageText[0]);
+                string Email = GarbageRemoval(MessageText[0]);
                 Validate(Email, new Regex(@"(?<email>\w+@\w+\.[a-z]{0,3})"));
 
-                EmailBody = FormatBody(messageText, 2);
+                EmailBody = FormatBody(MessageText, 2);
 
-                string Subject = GarbageRemoval(messageText[1]);
+                if (EmailBody.Length > 1028)
+                    throw new Exception("Email is too long");
+
+                string Subject = GarbageRemoval(MessageText[1]);
                 if (Subject.Length > 20)
                     throw new Exception("Subject too long");
                 if (Subject.Contains("SIR"))
                 {
                     isSIR = true;
-                    EmailBody = FormatBody(messageText, 4);
+                    EmailBody = FormatBody(MessageText, 4);
                     //check the date is valid
                     var dateRegex = new Regex(@"(\d+)[-.\/](\d+)[-.\/](\d+)");
                     if (!dateRegex.IsMatch(Subject))
                         throw new Exception("date invalid");
                     //check if the centre code is valid
                     var codeRegex = new Regex(@"^\d(\d|(?<!-)-)*\d$|^\d$");
-                    if (!codeRegex.IsMatch(GarbageRemoval(messageText[2])))
+                    if (!codeRegex.IsMatch(GarbageRemoval(MessageText[2])))
                         throw new Exception("code invalid");
                     //check the report is one of the valid reports
                     ArrayList validReports = new ArrayList() {"Theft of Properties", "Staff Attack", "Device Damage", "Raid", "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident", "Sport Injury", "Personal Info Leak"};
-                    if (!validReports.Contains(GarbageRemoval(messageText[3])))
+                    if (!validReports.Contains(GarbageRemoval(MessageText[3])))
                         throw new Exception("invalid Nature of Incident");
                     else
                     {
-                        string searchKey = GarbageRemoval(messageText[3]);
+                        string searchKey = GarbageRemoval(MessageText[3]);
                             if (ShowMessage.SIRS.ContainsKey(searchKey))
                             {
                                 ShowMessage.SIRS.TryGetValue(searchKey, out int val);
@@ -178,20 +176,25 @@ namespace Euston_Leisure_Messaging
                             else
                                 ShowMessage.SIRS.Add(searchKey, 1);
                     }
-                    replaceURLS();
+                    ReplaceURLS();
                 }
                 else
-                replaceURLS();
+                ReplaceURLS();
             }
             else if (message.Type.Equals(Type.Tweet))
             {
-                string TwitterId = GarbageRemoval(messageText[0]);
+                string TwitterId = GarbageRemoval(MessageText[0]);
                 Validate(TwitterId, new Regex(@"(?<=@)\w+"));
                 if (TwitterId.Length > 15)
                     throw new Exception("invalid twitterid!!");
 
+                string tweetBody = FormatBody(MessageText, 1);
+
+                if (tweetBody.Length > 140)
+                    throw new Exception("Tweet too long");
+
                 var regex = new Regex(@"(?<=@)\w+");
-                var matches = regex.Matches(FormatBody(messageText, 1));
+                var matches = regex.Matches(tweetBody);
 
                 foreach (Match searchKey in matches)
                     if (ShowMessage.Mentions.ContainsKey(searchKey.Value))
@@ -203,10 +206,10 @@ namespace Euston_Leisure_Messaging
                     ShowMessage.Mentions.Add(searchKey.Value, 1);
 
                 Console.WriteLine(TwitterId);
-                //store the hashtag and its count in an array if its already there then count++
 
+                //store the hashtag and its count in an array if its already there then count++
                 regex = new Regex(@"(?<=#)\w+");
-                matches = regex.Matches(FormatBody(messageText, 1));
+                matches = regex.Matches(tweetBody);
                 
                 foreach (Match hashtag in matches)
                 {
